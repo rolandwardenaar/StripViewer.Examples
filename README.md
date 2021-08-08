@@ -14,3 +14,5 @@ A clickable area can be created from
 This example is written in Dotnet Core, but the use of StripViewer is platform and language independent.
 The StripViewer is a simple Html-tag that can be placed in any web-page. It uses Json-data that needs to be provided by the backend of the application.
 The backend application makes the calls to a WebApi with simple Http-requests and sends the data to the WebViewer component.
+
+Klicking of the images or buttons in the area results in a javascript event and retruns the value of the image, which can be used in a shoppingcart.
