@@ -15,4 +15,4 @@ This example is written in Dotnet Core, but the use of StripViewer is platform a
 The StripViewer is a simple Html-tag that can be placed in any web-page. It uses Json-data that needs to be provided by the backend of the application.
 The backend application makes the calls to a WebApi with simple Http-requests and sends the data to the WebViewer component.
 
-Clicking of an image or button in the area results in a javascript event and retrurns the value of the clicked item, which then can be used in a shoppingcart.
+Clicking of an image or button in the area results in a javascript event and returns the value of the clicked item, which then can be used in a shoppingcart.
