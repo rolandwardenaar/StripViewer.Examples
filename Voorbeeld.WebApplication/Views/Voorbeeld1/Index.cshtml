@@ -1,0 +1,138 @@
+﻿<style>
+    .selected {
+        background-color: blueviolet;
+    }
+    .formcontainer{
+        width:800px;
+    }
+</style>
+<!-- selectie voor stripid  -->
+<div class="form-group col-12 row formcontainer">
+    <label class="col-2 col-form-label">StripId</label>
+    <input type="number" id="stripid" name="stripid" value="16" class="form-control col-3" />
+    <input type="submit" class="btn btn-success col ml-1" value="Get" onclick="setStripId()" />
+    <input type="submit" class="btn btn-success col ml-1" value="Previous" onclick="prevStrip()" />
+    <input type="submit" class="btn btn-success col ml-1" value="Next" onclick="nextStrip()" />
+</div>
+
+
+<!-- geselecteerd artikel  -->
+<div class="form-group col-12 row formcontainer">
+    <label class="col-2 col-form-label">Selected Art:</label>
+    <input id="selectedarticle" data-value class="form-control col-3">
+</div>
+
+<!-- stripviewer  -->
+<div class="text-center">
+    <strip-viewer id="1" stripid="0"></strip-viewer>
+</div>
+
+
+<!-- placeholder voor leveranciers artikelen grid  -->
+<div id="article-grid" style="width:800px">
+    <div class="tablerows"></div>
+</div>
+
+
+<script>
+
+    function setStripId() {
+        document.getElementById('selectedarticle').value = "";
+        removeArticlesTable();
+        var waarde = $('#stripid').val();
+        $('strip-viewer').attr('stripid', waarde);
+        getArticles();
+    }
+
+    function nextStrip() {
+        var waarde = parseInt($('#stripid').val()) + 1;
+        $('#stripid').val(waarde);
+        setStripId();
+    }
+
+    function prevStrip() {
+        var waarde = parseInt($('#stripid').val()) - 1;
+        $('#stripid').val(waarde);
+        setStripId()
+
+    }
+
+    function requestArticles(callback) {
+
+        var waarde = $('#stripid').val();
+        var url = '/api/getarticlejson/' + waarde;
+
+        $.get(url).done(function (data) {
+            callback(data);
+        });
+    }
+
+    function getArticles() {
+
+        requestArticles(function (data) {
+            var items = JSON.parse(data);
+            var rows = `<table id="art-table" class="table table-sm table-hover table-bordered mt-2">
+                                                         <thead>
+                                                             <tr>
+                                                                 <td>
+                                                                     Placeholder
+                                                                 </td>
+                                                                 <td>
+                                                                     supplierArticleName
+                                                                 </td>
+                                                                 <td>
+                                                                     SupplierId
+                                                                 </td>
+                                                                 <td>
+                                                                     SupplierName
+                                                                 </td>
+                                                                 <td>
+                                                                     NrInImage
+                                                                 </td>
+                                                             </tr>
+                                                         </thead>
+                                                         <tbody>`;
+            $.each(items, function (i, item) {
+
+                rows += '<tr><td>' + item.placeholder + '</td><td>' + item.supplierArticleName + '</td>';
+                rows += '<td>' + item.supplierId + '</td><td>' + item.supplierName + '</td><td>' + item.nrInImage + '</td></tr>';
+                // console.log(i + '=>' + rows);
+            });
+            rows += `</tbody> </table>`;
+
+            $('div.tablerows').replaceWith(rows);
+        });
+    }
+
+    function removeArticlesTable() {
+        $('#art-table').replaceWith('<div class="tablerows"></div>');
+    }
+
+    /*
+     * subscribe to event 'onselected' from StripViewer
+     */
+    const sv = document.getElementsByTagName('strip-viewer')[0];
+    sv.addEventListener('onselected', (event) => {
+        document.getElementById('selectedarticle').value = event.detail[0];
+        showselected(event.detail[0])
+    });
+
+    function showselected(waarde) {
+
+        document.getElementById('selectedarticle').value = waarde;
+
+        var table = document.getElementById('art-table');
+        for (var i = 1; i < table.rows.length; i++) {
+
+            console.log(table.rows[i].cells[0].innerText + ' <=> ' + waarde);
+
+            if (table.rows[i].cells[0].innerText == waarde) {
+                table.rows[i].cells[0].parentElement.setAttribute("class", "selected");
+                console.log(waarde + ' gevonden');
+            }
+            else {
+                table.rows[i].cells[0].parentElement.setAttribute("class", "");
+            }
+        }
+    }
+</script>
