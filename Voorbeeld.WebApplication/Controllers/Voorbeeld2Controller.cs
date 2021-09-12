@@ -31,9 +31,25 @@ namespace Voorbeeld.WebApplication.Controllers
             // CarTypeId is Ktype nummer van het voertuig.
             // stripGroup is productgroep: bv. assen, uitlaten, stuurdelen etc...
             int stripGroupId = 9;
-            return await new Api.ApiClient(_configuration).GetBlockIdsByCarTypeAsync(carTypeId, stripGroupId);
+            return await new Api.ApiClient(_configuration).GetBlockTextsByCarTypeAsync(carTypeId, stripGroupId);
         }
 
+
+        /// <summary>
+        /// Een of meer strips (JSON-array) via KtypeId en voertuigsoort
+        /// </summary>
+        /// <param name="carTypeId"></param>
+        /// <param name="stripGroupId"></param>
+        /// <returns></returns>
+
+        [HttpGet("/api/getblocklinkbycartype/{carTypeId}")]
+        public async Task<BlockLink[]> GetBlockLinkByCarTypeAsync(int carTypeId)
+        {
+            // CarTypeId is Ktype nummer van het voertuig.
+            // stripGroup is productgroep: bv. assen, uitlaten, stuurdelen etc...
+            int stripGroupId = 9;
+            return await new Api.ApiClient(_configuration).GetBlockLinkByCarTypeAsync(carTypeId, stripGroupId);
+        }
     }
 
 }
