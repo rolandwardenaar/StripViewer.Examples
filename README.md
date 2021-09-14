@@ -18,3 +18,5 @@ The backend application makes the calls to a WebApi with simple Http-requests an
 Clicking of an image or button in the area results in a javascript event and returns the value of the clicked item, which then can be used in a shoppingcart.
 
 More information and valid tokens can be obtained via info@databuilding.nl
+
+![image](https://user-images.githubusercontent.com/22129107/133269079-a86ff235-17f9-4604-b093-b58e7bfc1cc4.png)
