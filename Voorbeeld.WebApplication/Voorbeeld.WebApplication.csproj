@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="wwwroot\css\strip-viewer.css">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
     <Content Update="wwwroot\fake\strip.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

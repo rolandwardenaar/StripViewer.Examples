@@ -53,9 +53,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(responseStream);
-                var result = reader.ReadToEnd();
-                Debug.WriteLine(result);
-                return result;
+                return reader.ReadToEnd();
             }
             return "";
         }
@@ -70,9 +68,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(responseStream);
-                var result = reader.ReadToEnd();
-                Debug.WriteLine(result);
-                return result;
+                return reader.ReadToEnd();
             }
             return "";
         }
@@ -87,8 +83,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var stream = await response.Content.ReadAsStreamAsync();
                 var jsonReader = new StreamReader(stream);
-                var json = jsonReader.ReadToEnd();
-                return json;
+                return jsonReader.ReadToEnd();
             }
             return "";
         }
@@ -103,8 +98,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var stream = await response.Content.ReadAsStreamAsync();
                 var jsonReader = new StreamReader(stream);
-                var json = jsonReader.ReadToEnd();
-                return json;
+                return jsonReader.ReadToEnd();
             }
             return "";
         }
@@ -119,7 +113,6 @@ namespace Voorbeeld.WebApplication.Controllers.Api
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(responseStream);
                 var result = reader.ReadToEnd();
-                Debug.WriteLine(result);
                 return JsonConvert.DeserializeObject<BlockLinkText[]>(result);
             }
             return null;
@@ -136,7 +129,6 @@ namespace Voorbeeld.WebApplication.Controllers.Api
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(responseStream);
                 var result = reader.ReadToEnd();
-                Debug.WriteLine(result);
                 return JsonConvert.DeserializeObject<BlockLink[]>(result);
             }
             return null;
