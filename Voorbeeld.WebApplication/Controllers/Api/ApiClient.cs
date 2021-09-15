@@ -149,5 +149,21 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             }
             return default;
         }
+
+        public async Task<IQueryable<IdName>> GetStripGroups()
+        {
+            var client = GetClient();
+            var request = $"/api/getclientstripgroups";
+            var response = await client.GetAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                using var stream = await response.Content.ReadAsStreamAsync();
+                var jsonReader = new StreamReader(stream);
+                var json = jsonReader.ReadToEnd();
+                var stripgroups = System.Text.Json.JsonSerializer.Deserialize<List<IdName>>(json, _serializeOptions);
+                return stripgroups.AsQueryable();
+            }
+            return default;
+        }
     }
 }
