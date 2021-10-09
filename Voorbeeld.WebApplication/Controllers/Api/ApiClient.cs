@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,23 +16,27 @@ namespace Voorbeeld.WebApplication.Controllers.Api
     public class ApiClient
     {
         readonly JsonSerializerOptions _serializeOptions;
+        readonly IConfiguration _configuration;
 
-        public ApiClient()
+        public ApiClient(IConfiguration configuration )
         {
             _serializeOptions = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
+            _configuration = configuration;
         }
 
         HttpClient GetClient()
         {
             // token is beperkt geldig, dit is online te controleren bij: https://jwt.io/
-            var jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJEZW1vIiwicm9sZSI6IjBlZmQzYWVmLTdhOTQtNGU2NC04MmU1LTBmMzM2M2U1NGU4ZCIsIm5iZiI6MTYxNjIzMzE5OCwiZXhwIjoxNjQ3NzY5MTk4LCJpYXQiOjE2MTYyMzMxOTgsImlzcyI6Imh0dHBzOi8vZGF0YWJ1aWxkaW5nLmNvbS8iLCJhdWQiOiJodHRwczovL2RhdGFidWlsZGluZy5henVyZXdlYnNpdGVzLm5ldC8ifQ.Ka5wmRFTkR9TeMf643uiEJKCBRRLfAQNFBfOBaTtvyU";
+            var jwtToken = _configuration["Databuilding:Token"];
+
             // het adres van de web api
-            string baseurl = "https://databuilding.azurewebsites.net";
-            //string baseurl = "https://localhost:44301";// webApi
+            string baseurl = _configuration["Databuilding:BaseUrlApi"];
+
             HttpClient client = new HttpClient();
+
             // tussen Bearer en het JWT-token altijd 1 spatie!
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + jwtToken);
             client.BaseAddress = new Uri(baseurl);
@@ -48,9 +53,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(responseStream);
-                var result = reader.ReadToEnd();
-                Debug.WriteLine(result);
-                return result;
+                return reader.ReadToEnd();
             }
             return "";
         }
@@ -65,9 +68,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(responseStream);
-                var result = reader.ReadToEnd();
-                Debug.WriteLine(result);
-                return result;
+                return reader.ReadToEnd();
             }
             return "";
         }
@@ -82,8 +83,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var stream = await response.Content.ReadAsStreamAsync();
                 var jsonReader = new StreamReader(stream);
-                var json = jsonReader.ReadToEnd();
-                return json;
+                return jsonReader.ReadToEnd();
             }
             return "";
         }
@@ -98,12 +98,11 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             {
                 using var stream = await response.Content.ReadAsStreamAsync();
                 var jsonReader = new StreamReader(stream);
-                var json = jsonReader.ReadToEnd();
-                return json;
+                return jsonReader.ReadToEnd();
             }
             return "";
         }
-        public async Task<BlockLinkText[]> GetBlockIdsByCarTypeAsync(int carTypeId, int stripGroupId)
+        public async Task<BlockLinkText[]> GetBlockTextsByCarTypeAsync(int carTypeId, int stripGroupId)
         {
             var client = GetClient();
             var request = $"/api/getblocktextbycartype/{carTypeId}/{stripGroupId}";
@@ -114,8 +113,23 @@ namespace Voorbeeld.WebApplication.Controllers.Api
                 using var responseStream = await response.Content.ReadAsStreamAsync();
                 var reader = new StreamReader(responseStream);
                 var result = reader.ReadToEnd();
-                Debug.WriteLine(result);
                 return JsonConvert.DeserializeObject<BlockLinkText[]>(result);
+            }
+            return null;
+        }
+
+        public async Task<BlockLink[]> GetBlockLinkByCarTypeAsync(int carTypeId, int stripGroupId)
+        {
+            var client = GetClient();
+            var request = $"/api/getblocklinkbycartype/{carTypeId}/{stripGroupId}";
+            var response = await client.GetAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                var reader = new StreamReader(responseStream);
+                var result = reader.ReadToEnd();
+                return JsonConvert.DeserializeObject<BlockLink[]>(result);
             }
             return null;
         }
@@ -132,6 +146,22 @@ namespace Voorbeeld.WebApplication.Controllers.Api
                 var json = jsonReader.ReadToEnd();
                 var suppliers = System.Text.Json.JsonSerializer.Deserialize<List<IdName>>(json, _serializeOptions);
                 return suppliers.AsQueryable();
+            }
+            return default;
+        }
+
+        public async Task<IQueryable<IdName>> GetStripGroups()
+        {
+            var client = GetClient();
+            var request = $"/api/getclientstripgroups";
+            var response = await client.GetAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                using var stream = await response.Content.ReadAsStreamAsync();
+                var jsonReader = new StreamReader(stream);
+                var json = jsonReader.ReadToEnd();
+                var stripgroups = System.Text.Json.JsonSerializer.Deserialize<List<IdName>>(json, _serializeOptions);
+                return stripgroups.AsQueryable();
             }
             return default;
         }

@@ -1,4 +1,5 @@
-﻿<style>
+﻿@model Voorbeeld.WebApplication.Controllers.Voorbeeld2ViewModel
+<style>
     .selected {
         background-color: blueviolet;
     }
@@ -6,51 +7,59 @@
     .buttons {
         width: 800px;
     }
-    .buttons button{
-        width: 800px;
-    }
+
+        .buttons button {
+            width: 800px;
+        }
+
     .ktypecontainer {
         width: 800px;
     }
 </style>
 <!-- selectie voor ktypeid  -->
-<div class="form-group row ktypecontainer">
+<div class="form-group row col-12">
+    <label class="col-2 col-form-label">StripGroup</label>
+
+    <select class="form-control col-2" asp-for="SelectedStripGroupId" asp-items="Model.StripGroupList"></select>
+
+
     <label class="col-2 col-form-label">KTypeId</label>
-    <input type="number" id="ktypeid" name="ktypeid" value="90014035" class="form-control col-3" />
-    <input type="submit" class="btn btn-success col ml-1" value="Get" onclick="setKtypeId()" />
+    <input type="number" id="ktypeid" name="ktypeid" value="17484" class="form-control col-3" />
+    <input type="submit" class="btn btn-success col ml-1" value="Get" onclick="setKtypeIdAttributes()" />
     <input type="submit" class="btn btn-success col ml-1" value="Previous" onclick="prevKtype()" />
     <input type="submit" class="btn btn-success col ml-1" value="Next" onclick="nextKtype()" />
 </div>
 
 <!-- selectie voor stripid -->
 
-<div  class="buttons">
+<div class="buttons">
     <div class="stripbuttonrows"></div>
 </div>
 
 
+
 <!-- stripviewer  -->
-<div id="stripcontainer" class="text-center" >
-    <strip-viewer id="1" stripid="0"></strip-viewer>
+<div id="stripcontainer" class="text-center">
+    <strip-viewer id="1" stripid="0" height="400"></strip-viewer>
 </div>
 
 <script>
 
-    function setKtypeId() {
+    function setKtypeIdText() {
 
-        var waarde = $('#ktypeid').val();        
+        var waarde = $('#ktypeid').val();
 
         requestBlocktexts(function (items) {
 
             var rows = `<table id="art-table" class="stripbuttonrows table table-sm table-hover table-bordered mt-2 mb-2">
-                                                         <thead>
-                                                             <tr>
-                                                                 <td>
-                                                                     Beschikbare systemen
-                                                                 </td>
-                                                             </tr>
-                                                         </thead>
-                                                         <tbody>`;
+                                                           <thead>
+                                                               <tr>
+                                                                   <td>
+                                                                       Beschikbare systemen
+                                                                   </td>
+                                                               </tr>
+                                                           </thead>
+                                                           <tbody>`;
             $.each(items, function (i, item) {
                 rows += `<tr><td><button class="btn btn-outline-success" onclick="setStripId(` + item.blockId + `)">` + item.name + `</button></td></tr>`;
             });
@@ -60,18 +69,85 @@
         });
     }
 
-    function requestBlocktexts(callback) {
+    function setKtypeIdAttributes() {
 
         var waarde = $('#ktypeid').val();
-        var url = '/api/getblocktextbycartype/' + waarde;
+
+        requestBlockLinks(function (items) {
+
+            var rows = `<table id="art-table" class="stripbuttonrows table table-sm table-hover table-bordered mt-2 mb-2">
+                                                           <thead>
+                                                               <tr>
+                                                                   <td>
+                                                                       Beschikbare systemen
+                                                                   </td>
+                                                               </tr>
+                                                           </thead>
+                                                           <tbody>`;
+
+            $.each(items, function (i, item) {
+                var attribute = firstItem(item.blockLinkAttributes);
+                if (attribute == undefined) {
+                    var text = firstItem(item.blockLinkTexts);
+                    rows += `<tr><td><button class="btn btn-outline-success" onclick="setStripId(` + item.blockId + `)">` + text.name  + `</button></td></tr>`;
+                } else {
+                    rows += `<tr><td><button class="btn btn-outline-success" onclick="setStripId(` + item.blockId + `)">` + attribute.name + '&nbsp;' + attribute.value + `</button></td></tr>`;
+                }
+                    
+                
+            });
+
+            rows += `</tbody> </table>`;
+            $('.stripbuttonrows').replaceWith(rows);
+        });
+    }
+    function firstItem(array, n) {
+        if (array == null) return void 0;
+        if (n == null) return array[0];
+        if (n < 0) return [];
+        return array.slice(0, n);
+    };
+
+    function requestBlocktexts(callback) {
+        $('strip-viewer').attr('stripid', 0);
+        var stripgroup = $('#SelectedStripGroupId').val();
+
+        if (stripgroup == 1) {
+            $('strip-viewer').attr('height', 400);
+        }
+        else {
+            $('strip-viewer').attr('height', 800);
+        }
+
+        var waarde = $('#ktypeid').val();
+        var url = '/api/getblocktextbycartype/' + waarde + '/' + stripgroup;
 
         $.get(url).done(function (data) {
             callback(data);
         });
     }
 
+    function requestBlockLinks(callback) {
+        $('strip-viewer').attr('stripid', 0);
+        var stripgroup = $('#SelectedStripGroupId').val();
+
+        if (stripgroup == 1) {
+            $('strip-viewer').attr('height', 400)
+        }
+        else {
+            $('strip-viewer').attr('height', 800);
+        }
+
+        var waarde = $('#ktypeid').val();
+        var url = '/api/getblocklinkbycartype/' + waarde + '/' + stripgroup;
+
+        $.get(url).done(function (data) {
+            callback(data);
+        });
+    }
 
     function setStripId(id) {
+        $('strip-viewer').attr('stripid', 0);
         removeArticlesTable();
         $('strip-viewer').attr('stripid', id);
         $('strip-viewer').attr('visibility', 'visible');
@@ -81,18 +157,19 @@
     function nextKtype() {
         var waarde = parseInt($('#ktypeid').val()) + 1;
         $('#ktypeid').val(waarde);
-        setKtypeId();
+        setKtypeIdAttributes();
     }
 
     function prevKtype() {
         var waarde = parseInt($('#ktypeid').val()) - 1;
         $('#ktypeid').val(waarde);
-        setKtypeId();
+        setKtypeIdAttributes();
     }
 
     function getArticles() {
         console.log('getArticles');
     }
+
     function removeArticlesTable() {
         console.log('removeArticlesTable');
     }
