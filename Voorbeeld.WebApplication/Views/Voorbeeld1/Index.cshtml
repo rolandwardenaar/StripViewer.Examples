@@ -1,20 +1,13 @@
-﻿<style>
-    .selected {
-        background-color: blueviolet;
-    }
-    .formcontainer{
-        width:800px;
-    }
-</style>
-<!-- selectie voor stripid  -->
-<div class="form-group col-12 row formcontainer">
-    <label class="col-2 col-form-label">StripId</label>
-    <input type="number" id="stripid" name="stripid" value="1" class="form-control col-3" />
-    <input type="submit" class="btn btn-success col ml-1" value="Get" onclick="setStripId()" />
-    <input type="submit" class="btn btn-success col ml-1" value="Previous" onclick="prevStrip()" />
-    <input type="submit" class="btn btn-success col ml-1" value="Next" onclick="nextStrip()" />
-</div>
+﻿@model ShoppingCart
 
+<!-- selectie voor stripid  -->
+<div class="button-group">
+    <label class="">StripId</label>
+    <input type="number" id="stripid" name="stripid" value="1" class="form-control" />
+    <input type="submit" class="btn btn-success ml-1" value="Get" onclick="setStripId()" />
+    <input type="submit" class="btn btn-success ml-1" value="Previous" onclick="prevStrip()" />
+    <input type="submit" class="btn btn-success ml-1" value="Next" onclick="nextStrip()" />
+</div>
 
 <!-- geselecteerd artikel  -->
 <div class="form-group col-12 row formcontainer">
@@ -27,12 +20,28 @@
     <strip-viewer id="1" stripid="0" height="800"></strip-viewer>
 </div>
 
-
 <!-- placeholder voor leveranciers artikelen grid  -->
 <div id="article-grid" style="width:800px">
     <div class="tablerows"></div>
 </div>
 
+<!--  shopping cart -->
+<div class="cart">
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    ShoppingCart
+                </th>
+                <th>
+                    <a class="btn btn-primary btn-sm" href="@Url.Action("ClearCart","Voorbeeld1")">Clear</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="cart-content">
+        </tbody>
+    </table>
+</div>
 
 <script>
 
@@ -42,6 +51,7 @@
         var waarde = $('#stripid').val();
         $('strip-viewer').attr('stripid', waarde);
         getArticles();
+
     }
 
     function nextStrip() {
@@ -133,6 +143,29 @@
             else {
                 table.rows[i].cells[0].parentElement.setAttribute("class", "");
             }
+        }
+
+        $.ajax({
+            url: 'Voorbeeld1/AddArticle',
+            data: { name: waarde },
+            success: function (data) {
+                // Call this function on success
+                fillCart(data);
+                //return data;
+            },
+
+        }).done(function (data) {
+            //console.log(data);
+        });
+
+        function fillCart(data) {
+            var rows = '<tbody id="cart-content">';
+            $.each(data, function (i, a) {
+                rows += '<tr><td colspan="2">' + a + '</td></tr>' + '\n';
+            });
+            rows += '</tbody>';
+
+            $('#cart-content').replaceWith(rows);
         }
     }
 </script>

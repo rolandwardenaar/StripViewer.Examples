@@ -72,3 +72,23 @@ body {
 .placeholder-label {
     visibility: hidden !important;
 }
+
+.selected {
+    background-color: blueviolet;
+}
+
+.button-group {
+    float: left;
+    display:inline-grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+}
+
+.cart {
+    position:absolute;
+    top:80px;
+    left:900px;
+    float:right;
+    width: 200px;
+    min-height: 100px;
+    z-index:99;
+}
