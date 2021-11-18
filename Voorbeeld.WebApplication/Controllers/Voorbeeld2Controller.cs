@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Voorbeeld.WebApplication.Models;
-using Voorbeeld.WebApplication.Models.Voorbeeld3;
 
 namespace Voorbeeld.WebApplication.Controllers
 {

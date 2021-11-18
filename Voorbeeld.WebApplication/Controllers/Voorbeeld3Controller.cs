@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using System.Threading.Tasks;
-using System.Text.Json;
+using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.Json;
+using System.Threading.Tasks;
 using Voorbeeld.WebApplication.Models.Voorbeeld3;
 
 namespace Voorbeeld.WebApplication.Controllers
@@ -51,7 +50,7 @@ namespace Voorbeeld.WebApplication.Controllers
         {
             return (await new Api.ApiClient(_configuration)
                                  .GetSuppliers())
-                                 .Where( x => x.Name == name)
+                                 .Where(x => x.Name == name)
                                  .FirstOrDefault()?.Id ?? 0;
         }
 

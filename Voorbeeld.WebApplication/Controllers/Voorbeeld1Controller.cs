@@ -30,7 +30,7 @@ namespace Voorbeeld.WebApplication.Controllers
         public IActionResult ClearCart()
         {
             ShoppingCart.Articles.Clear();
-            return View("Index",ShoppingCart);
+            return View("Index", ShoppingCart);
         }
         public List<string> AddArticle(string name)
         {
