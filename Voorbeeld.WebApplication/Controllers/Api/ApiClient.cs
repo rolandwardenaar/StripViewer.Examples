@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -18,7 +17,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
         readonly JsonSerializerOptions _serializeOptions;
         readonly IConfiguration _configuration;
 
-        public ApiClient(IConfiguration configuration )
+        public ApiClient(IConfiguration configuration)
         {
             _serializeOptions = new JsonSerializerOptions
             {
@@ -35,7 +34,7 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             // het adres van de web api
             string baseurl = _configuration["Databuilding:BaseUrlApi"];
 
-            HttpClient client = new HttpClient();
+            var client = new HttpClient();
 
             // tussen Bearer en het JWT-token altijd 1 spatie!
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + jwtToken);

@@ -10,14 +10,12 @@ namespace Voorbeeld.WebApplication.Controllers
 {
     public class Voorbeeld1Controller : Controller
     {
-        private readonly ILogger<Voorbeeld1Controller> _logger;
         private readonly IConfiguration _configuration;
 
         public static ShoppingCart ShoppingCart { get; set; }
 
-        public Voorbeeld1Controller(ILogger<Voorbeeld1Controller> logger, IConfiguration configuration)
+        public Voorbeeld1Controller(IConfiguration configuration)
         {
-            _logger = logger;
             _configuration = configuration;
             if (ShoppingCart == null) ShoppingCart = new ShoppingCart();
         }
@@ -30,7 +28,7 @@ namespace Voorbeeld.WebApplication.Controllers
         public IActionResult ClearCart()
         {
             ShoppingCart.Articles.Clear();
-            return View("Index",ShoppingCart);
+            return View("Index", ShoppingCart);
         }
         public List<string> AddArticle(string name)
         {

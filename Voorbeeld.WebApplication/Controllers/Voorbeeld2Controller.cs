@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Voorbeeld.WebApplication.Models;
-using Voorbeeld.WebApplication.Models.Voorbeeld3;
 
 namespace Voorbeeld.WebApplication.Controllers
 {
@@ -18,14 +17,9 @@ namespace Voorbeeld.WebApplication.Controllers
     public class Voorbeeld2Controller : Controller
     {
         private readonly IConfiguration _configuration;
-        readonly JsonSerializerOptions _serializeOptions;
 
         public Voorbeeld2Controller(IConfiguration configuration)
         {
-            _serializeOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
             _configuration = configuration;
         }
         public async Task<IActionResult> Index()
