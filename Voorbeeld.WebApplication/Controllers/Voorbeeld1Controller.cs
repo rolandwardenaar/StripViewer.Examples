@@ -47,6 +47,12 @@ namespace Voorbeeld.WebApplication.Controllers
         {
             return await new Api.ApiClient(_configuration).GetStripJson(id);
         }
+        [HttpGet("/api/getstripjson/{id}/{platenumber}")]
+        public async Task<string> GetStripJson(int id, string platenumber)
+        {
+            return await new Api.ApiClient(_configuration).GetStripJsonWithPlateNumber(id, platenumber);
+        }
+        
 
         [HttpGet("/api/getarticlejson/{id}")]
         public async Task<string> GetArticleJson(int id)

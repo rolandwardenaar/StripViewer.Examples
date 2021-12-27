@@ -57,6 +57,21 @@ namespace Voorbeeld.WebApplication.Controllers.Api
             return "";
         }
 
+        public async Task<string> GetStripJsonWithPlateNumber(int id, string platenumber)
+        {
+            var client = GetClient();
+            var request = $"/api/getstripbyblockid/{id}/{platenumber}";
+            var response = await client.GetAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                using var responseStream = await response.Content.ReadAsStreamAsync();
+                var reader = new StreamReader(responseStream);
+                return reader.ReadToEnd();
+            }
+            return "";
+        }
+
         public async Task<string> GetStripForHotspotImageJson(int id)
         {
             var client = GetClient();
