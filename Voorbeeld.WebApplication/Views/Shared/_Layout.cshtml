@@ -3,16 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Voorbeeld.WebApplication</title>
+    <title>@ViewData["Title"] - Example for StripViewer</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Voorbeeld.WebApplication</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Example for StripViewer</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,14 +22,11 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Voorbeeld1" asp-action="Index">Voorbeeld 1</a>
-                        </li>
+                            <a class="nav-link text-dark" target="_blank" href="https://databuilding.azurewebsites.net/swagger/index.html">Stripviewer Api</a>
+                        </li>                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Voorbeeld2" asp-action="Index">Voorbeeld 2</a>
-                        </li>
-                           <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Voorbeeld3" asp-action="Index">Voorbeeld 3</a>
-                        </li>
+                            <a class="nav-link text-dark" target="_blank" href="https://yarodataservices.com/Home/Contact">Contact</a>
+                        </li>                        
                     </ul>
                 </div>
             </div>
@@ -44,7 +40,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Voorbeeld.WebApplication 
+            &copy; @DateTime.Now.Year - YARO Data Services B.V. 
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

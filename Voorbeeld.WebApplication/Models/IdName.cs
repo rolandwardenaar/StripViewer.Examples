@@ -1,5 +1,4 @@
-﻿
-namespace Voorbeeld.WebApplication.Models.Voorbeeld3
+﻿namespace Voorbeeld.WebApplication.Models
 {
     public class IdName
     {

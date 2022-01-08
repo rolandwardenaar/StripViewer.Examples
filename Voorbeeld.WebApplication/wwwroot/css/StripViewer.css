@@ -1,0 +1,107 @@
+﻿.kenteken-page {
+
+}
+
+.plate-image {
+    position:relative;
+    left:-240px;
+    z-index:-2;
+}
+
+
+strip-viewer {
+    min-height: 400px;
+    transform:scale(80%);
+    position:relative;
+    left:-80px;    
+}
+
+#Car_Plate {
+    padding-left: 40px;
+    margin-right: 20px;
+    width: 200px;
+    height: 50px;
+    font-size: 32px;
+    background-image: url(../img/kentekenplaat.png);
+    background-repeat: no-repeat;
+    background-size: 198px 48px;    
+}
+
+
+
+#carform {
+    margin-bottom: 4px;
+    width: stretch;
+    
+}
+    #carform input[type=submit] {
+        min-width: 80px;
+        max-height: 50px;
+        margin-top: 10px;
+    }
+
+.kenteken-result {
+    
+    width: stretch;
+    min-height: 160px;
+    min-width: 480px;
+    border: solid 1px silver;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 4px;
+    position:relative;
+    left:-14px
+}
+    .kenteken-result .img1 img {
+    float: left;
+    display: block;
+    margin-right: 10px;
+    max-width: 40px;
+    max-height: 40px;
+}
+.kenteken-result .img2 img {
+    max-width: 240px;
+    max-height: 160px;
+    margin-top: 30px;
+    display: block;
+}
+    .kenteken-result > div:first-of-type {
+        display: block;
+        
+    }
+
+    .kenteken-result > div > div {
+        margin-top: 10px;
+        margin-right: 10px;
+        float: left;
+    }
+
+    .kenteken-result .img2 div {
+        float: left;
+    }
+#stripgroupform {
+    margin-bottom: 4px;
+    
+    max-width:480px;
+}
+    #stripgroupform select {
+        width: 250px;
+        margin-right: 20px;
+        
+    }
+.parameters {
+    width: 480px;
+    margin-bottom: 4px;
+    
+}
+.parameters label{
+    width:100px;
+    
+}
+.shopping-basket{
+    width:450px;
+    height:380px;
+    float:right;
+    overflow:auto;
+    
+}

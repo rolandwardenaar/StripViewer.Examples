@@ -1,3 +1,207 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model StripViewModel
+
+<div class="kenteken-page">
+
+    <form asp-controller="Home" id="carform">
+        <div class="row">
+            <input type="text" class="form-control" asp-for="Car.Plate" value="@Model.Car.Plate" placeholder="AA-BB-CC" />
+            <input type="submit"
+                   class="btn btn-success"
+                   formmethod="post"
+                   asp-action="GetCar"
+                   asp-route-data=@Model
+                   value="Get" />
+        </div>
+    </form>
+
+
+    <div class="kenteken-result">
+        <div>
+            <div class="img1">
+                <img src="@Model.Car.Brand.Image" />
+            </div>
+            <div>@Model.Car.Brand.Name</div>
+            <div>@Model.Car.Model.Name</div>
+            <div>@Model.Car.Type.Name</div>
+        </div>
+        <div class="img2">
+            <img src="@Model.Car.Model.Image" />
+
+            @if (@Model.Car.Type.Id > 0)
+            {
+                <div>
+                    Index: @Model.Car.Type.Id
+                </div>
+            }
+
+            @if (@Model.Car.Type.Fuel == "0")
+            {
+                <div>Fuel: Hybride</div>
+            }
+            @if (@Model.Car.Type.Fuel == "1")
+            {
+                <div>Fuel: Benzine</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(@Model.Car.Type.MotorCode))
+            {
+                <div>Motor: @Model.Car.Type.MotorCode</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(@Model.Car.Type.From))
+            {
+                <div>[ @Model.Car.Type.From - @Model.Car.Type.Until ]</div>
+            }
+            @if (@Model.Car.Status == 404)
+            {
+                <div>Voertuig niet gevonden.</div>
+            }
+        </div>
+
+
+    </div>
+
+    <div class="shopping-basket">
+         <div class="form-inline">
+            <label>Selected Article</label>
+            <input id="selectedarticle" data-value readonly class="form-control col-4 ml-2">
+        </div>
+        <pre id="selected-item"></pre>
+    </div>
+
+
+    <form asp-controller="Home" id="stripgroupform">
+        <div class="row">
+
+            <select class="form-control"
+                    asp-for="StripGroupId"
+                    asp-items="@Model.StripGroupList">
+            </select>
+
+
+            <input type="hidden" asp-for="Car.Brand.Id" />
+            <input type="hidden" asp-for="Car.Brand.Image" />
+            <input type="hidden" asp-for="Car.Brand.Name" />
+
+            <input type="hidden" asp-for="Car.Model.Id" />
+            <input type="hidden" asp-for="Car.Model.Image" />
+            <input type="hidden" asp-for="Car.Model.Name" />
+
+            <input type="hidden" asp-for="Car.Type.Id" />
+            <input type="hidden" asp-for="Car.Type.Image" />
+            <input type="hidden" asp-for="Car.Type.Name" />
+
+            <input type="hidden" asp-for="Car.Type.Fuel" />
+            <input type="hidden" asp-for="Car.Type.MotorCode" />
+            <input type="hidden" asp-for="Car.Type.From" />
+            <input type="hidden" asp-for="Car.Type.Until" />
+            <input type="hidden" asp-for="Car.Plate" />
+
+
+            <input type="submit"
+                   class="btn btn-success"
+                   formmethod="post"
+                   asp-route-data=@Model
+                   asp-action="GetStripMenu"
+                   value="Get" />
+        </div>
+    </form>
+
+
+    <form asp-controller="Home" id="stripgroupform">
+        <div class="row">
+
+            <input type="hidden" asp-for="Car.Brand.Id" />
+            <input type="hidden" asp-for="Car.Brand.Image" />
+            <input type="hidden" asp-for="Car.Brand.Name" />
+
+            <input type="hidden" asp-for="Car.Model.Id" />
+            <input type="hidden" asp-for="Car.Model.Image" />
+            <input type="hidden" asp-for="Car.Model.Name" />
+
+            <input type="hidden" asp-for="Car.Type.Id" />
+            <input type="hidden" asp-for="Car.Type.Image" />
+            <input type="hidden" asp-for="Car.Type.Name" />
+
+            <input type="hidden" asp-for="Car.Type.Fuel" />
+            <input type="hidden" asp-for="Car.Type.MotorCode" />
+            <input type="hidden" asp-for="Car.Type.From" />
+            <input type="hidden" asp-for="Car.Type.Until" />
+            <input type="hidden" asp-for="Car.Plate" />
+
+            <input type="hidden" asp-for="StripGroupList" />
+            <input type="hidden" asp-for="StripGroupId" />
+
+            @if (@Model.BlockLinkTexts != null)
+            {
+                <table>
+                    <tbody>
+
+                        @foreach (var blt in @Model.BlockLinkTexts)
+                        {
+                            <tr>
+                                <td>
+                                    <button type="submit"
+                                    class="btn btn-light"
+                                    formmethod="post"
+                                    asp-action="GetStrip"
+                                    id="mysubmit"
+                                    name="StripId"
+                                    value="@blt.BlockId">
+                                        @blt.Name [ @blt.BlockId ]
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+
+        </div>
+    </form>
+
+    <div class="parameters">
+
+        <div class="form-inline">
+            <label>StripId:</label>
+            <input class="form-control" value="@Model.StripId" readonly>
+        </div>
+
+        <div class="form-inline">
+            <label>Plate:</label>
+            <input class="form-control" value="@Model.Car.Plate" readonly>
+        </div>
+       
+    </div>
+    <div class="row">
+        <strip-viewer stripid="@Model.StripId" platenumber="'@Model.Car.Plate'" onselected="showselected" height=@Model.Height></strip-viewer>
+    </div>
+
+</div>
+
+@section scripts
+{
+<script>
+    // event listener
+    const demoEventElement = document.getElementsByTagName('strip-viewer')[0];
+    demoEventElement.addEventListener('onselected', (event) => {
+        console.info('[Event]', event.detail[0]);
+        document.getElementById('selectedarticle').value = event.detail[0];
+
+
+        //alert(event.detail[0]);
+        var items = @Html.Raw( Json.Serialize(@Model.SupplierArticles));
+
+        var item = items.filter(function(x){
+            return x.placeholder == event.detail[0];
+        });
+
+         $('#selected-item').replaceWith('<pre id="selected-item">'+ JSON.stringify( item, null, 2 ) + '</pre>');
+
+        console.log(item);
+
+    });
+
+</script>
 }
