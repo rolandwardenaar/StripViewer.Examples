@@ -27,6 +27,33 @@ namespace Voorbeeld.WebApplication.Controllers
             return View(_stripViewModel);
         }
 
+        [HttpGet]
+        public IActionResult Feedback(StripViewModel strip)
+        {
+            var feedback = new Feedback
+            {
+                BlockId = strip.StripId,
+                KtypeId = strip.Car.Type.Id,
+                PlateNumber = strip.Car.Plate
+            };
+
+            return View(feedback);
+        }
+
+        /// <summary>
+        /// Sends feedback to Yarodataservices.com 
+        /// about a finding/remark/error from a user.
+        /// </summary>
+        /// <param name="feedback"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<IActionResult> Feedback(Feedback feedback)
+        {
+            feedback.Response = await _stripApi.PostFeedback(feedback);
+            return View(feedback);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> GetCar(StripViewModel vm)
         {

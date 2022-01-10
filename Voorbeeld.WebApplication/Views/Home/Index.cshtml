@@ -58,11 +58,11 @@
             }
         </div>
 
-
     </div>
 
+   
     <div class="shopping-basket">
-         <div class="form-inline">
+        <div class="form-inline">
             <label>Selected Article</label>
             <input id="selectedarticle" data-value readonly class="form-control col-4 ml-2">
         </div>
@@ -172,8 +172,26 @@
             <label>Plate:</label>
             <input class="form-control" value="@Model.Car.Plate" readonly>
         </div>
-       
+
     </div>
+
+     <div>
+        <form asp-controller="Home" id="feedbackform">
+
+            <input type="hidden" asp-for="Car.Type.Id" />
+            <input type="hidden" asp-for="Car.Plate" />
+            <input type="hidden" asp-for="StripId" />
+            <input type="submit"
+                   class="btn btn-success"
+                   formmethod="get"
+                   asp-controller="Home"
+                   asp-action="Feedback"
+                   asp-route-data=@Model
+                   value="Feedback" />
+        </form>
+    </div>
+
+
     <div class="row">
         <strip-viewer stripid="@Model.StripId" platenumber="'@Model.Car.Plate'" onselected="showselected" height=@Model.Height></strip-viewer>
     </div>

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Voorbeeld.WebApplication.Models;
@@ -160,6 +161,20 @@ namespace Voorbeeld.WebApplication.Api
                 return stripgroups.AsQueryable();
             }
             return default;
+        }
+
+        public async Task<string> PostFeedback(Feedback feedback)
+        {
+            var command = "/api/feedback";
+
+            string json = JsonSerializer.Serialize(feedback);
+            HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await _stripClient.PostAsync(command, content);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            return "error";
         }
     }
 }

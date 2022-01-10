@@ -1,0 +1,37 @@
+﻿@model Voorbeeld.WebApplication.Models.Feedback
+
+<form  asp-controller="Home" asp-action="Feedback" method="post">
+    <h4>Sender</h4>
+    <div class="form-inline">
+        <label class="col-2">Name</label>
+        <input class="form-control" asp-for="Name" />
+    </div>
+
+    <div class="form-inline">
+        <label class="col-2">ReplyEmailAddress</label>
+        <input class="form-control" asp-for="ReplyEmailAddress" />
+    </div>
+    <h4>About</h4>
+    <div class="form-inline">
+        <label class="col-2">Plate</label>
+        <input class="form-control" asp-for="PlateNumber" readonly />
+    </div>
+    <div class="form-inline">
+        <label class="col-2">Car Index</label>
+        <input class="form-control" asp-for="KtypeId" readonly />
+    </div>
+    <div class="form-inline">
+        <label class="col-2">Strip Index</label>
+        <input class="form-control" asp-for="BlockId" readonly />
+    </div>
+    <h4>Findings</h4>
+    <div class="form-inline">
+        <label class="col-2">Message</label>
+        <textarea class="form-control" asp-for="Message" rows="5" cols="100">
+
+        </textarea>
+    </div>
+    
+    <input type="submit" class="btn btn-success" value="Submit" />
+    <label asp-for="Response" >@Model.Response</label>
+</form>
