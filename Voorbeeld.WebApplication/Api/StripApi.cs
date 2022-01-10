@@ -176,5 +176,23 @@ namespace Voorbeeld.WebApplication.Api
             }
             return "error";
         }
+
+        /// <summary>
+        /// Current Bearer token is basis for newly created token.
+        /// Token should be less han one day valid
+        /// New token will be valid for one more month.
+        /// </summary>
+        /// <returns></returns>        
+        public async Task<string> GetNewToken()
+        {
+            var command = "/api/token";
+            var response = await _stripClient.GetAsync(command);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            return null;
+        }
+    
     }
 }

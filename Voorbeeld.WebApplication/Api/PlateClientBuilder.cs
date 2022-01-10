@@ -15,12 +15,12 @@ namespace Voorbeeld.WebApplication.Api
         {
             var baseUrl = "https://2zykqjkvnj.execute-api.eu-central-1.amazonaws.com";//
             // get a token at yarodataservice.com to be able to use plate-service !!!
-            var token = "";
-            if (!string.IsNullOrEmpty(token))
+            var appKey = "";
+            if (!string.IsNullOrEmpty(appKey))
             {
                 var client = _clientFactory.CreateClient();
 
-                client.DefaultRequestHeaders.Add("Authorization", token);
+                client.DefaultRequestHeaders.Add("Authorization", appKey);
                 client.DefaultRequestHeaders.Add("X-API-Version", "1.0.0");
                 client.BaseAddress = new Uri(baseUrl);
                 return client;
