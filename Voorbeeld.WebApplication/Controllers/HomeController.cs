@@ -132,7 +132,7 @@ namespace Voorbeeld.WebApplication.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("/Home/api/getstripjson/{id}")]
+        [HttpGet("api/getstripjson/{id}")]
         public async Task<string> GetStripJson(int id)
         {
             return await _stripApi.GetStripJson(id);
@@ -145,7 +145,7 @@ namespace Voorbeeld.WebApplication.Controllers
         /// <param name="id"></param>
         /// <param name="platenumber"></param>
         /// <returns></returns>
-        [HttpGet("/Home/api/getstripjson/{id}/{platenumber}")]
+        [HttpGet("api/getstripjson/{id}/{platenumber}")]
         public async Task<string> GetStripJson(int id, string platenumber)
         {
             return await _stripApi.GetStripJsonWithPlateNumber(id, platenumber);
