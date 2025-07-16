@@ -7,7 +7,7 @@ A clickable area can be created from
 - individual images ( the image becomes clickable )
 - a single large image with numbers ( a button is placed on the numbers in the image )
 
-The viewer works in combination with the [Stripviewer Web Api](https://databuilding.azurewebsites.net/swagger/index.html) .
+The viewer works in combination with the [Stripviewer Web Api](https://api.yarodataservices.com/swagger/index.html) .
 
 The StripViewer displays graphical representations of Car Systems together with the article information cross-linked with the original numbers and/or supplier article numbers:
 
