@@ -1,225 +1,452 @@
-﻿@model StripViewModel
+@model StripViewModel
 
 <div class="kenteken-page">
-
-    <form asp-controller="Home" id="carform">
-        <div class="row">
-            <input type="text" class="form-control" asp-for="Car.Plate" value="@Model.Car.Plate" placeholder="AA-BB-CC" />
-            <input type="submit"
-                   class="btn btn-success"
-                   formmethod="post"
-                   asp-action="GetCar"
-                   asp-route-data=@Model
-                   value="Get" />
-        </div>
-    </form>
-
-
-    <div class="kenteken-result">
-        <div>
-            <div class="img1">
-                <img src="@Model.Car.Brand.Image" />
-            </div>
-            <div>@Model.Car.Brand.Name</div>
-            <div>@Model.Car.Model.Name</div>
-            <div>@Model.Car.Type.Name</div>
-        </div>
-        <div class="img2">
-            <img src="@Model.Car.Model.Image" />
-
-            @if (@Model.Car.Type.Id > 0)
-            {
-                <div>
-                    Index: @Model.Car.Type.Id
+    <!-- Hero Section -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center py-3">
+                    <h1 class="card-title mb-2 h3">
+                        <i class="fas fa-search me-2"></i>
+                        Voertuig Onderdelen Zoeker
+                    </h1>
+                    <p class="card-text mb-0">
+                        Voer uw kenteken in om de juiste onderdelen te vinden
+                    </p>
                 </div>
-            }
-
-            @if (@Model.Car.Type.Fuel == "0")
-            {
-                <div>Fuel: Hybride</div>
-            }
-            @if (@Model.Car.Type.Fuel == "1")
-            {
-                <div>Fuel: Benzine</div>
-            }
-
-            @if (!string.IsNullOrWhiteSpace(@Model.Car.Type.MotorCode))
-            {
-                <div>Motor: @Model.Car.Type.MotorCode</div>
-            }
-
-            @if (!string.IsNullOrWhiteSpace(@Model.Car.Type.From))
-            {
-                <div>[ @Model.Car.Type.From - @Model.Car.Type.Until ]</div>
-            }
-            @if (@Model.Car.Status == 404)
-            {
-                <div>Voertuig niet gevonden.</div>
-            }
+            </div>
         </div>
-
     </div>
 
-   
-    <div class="shopping-basket">
-        <div class="form-inline">
-            <label>Selected Article</label>
-            <input id="selectedarticle" data-value readonly class="form-control col-4 ml-2">
+    <!-- License Plate Search -->
+    <div class="row mb-3">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-car me-2"></i>
+                        Kenteken Opzoeken
+                    </h6>
+                </div>
+                <div class="card-body py-3">
+                    <form asp-controller="Home" id="carform">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-md-8">
+                                <label asp-for="Car.Plate" class="form-label fw-semibold small">
+                                    <i class="fas fa-id-card me-2"></i>
+                                    Kenteken
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white">
+                                        <i class="fas fa-car"></i>
+                                    </span>
+                                    <input type="text" 
+                                           class="form-control license-plate-input" 
+                                           asp-for="Car.Plate" 
+                                           value="@Model.Car.Plate" 
+                                           placeholder="AA-BB-CC" 
+                                           maxlength="8" 
+                                           style="text-transform: uppercase;" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit"
+                                        class="btn btn-success w-100"
+                                        formmethod="post"
+                                        asp-action="GetCar"
+                                        asp-route-data="@Model">
+                                    <i class="fas fa-search me-2"></i>
+                                    Zoeken
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <pre id="selected-item"></pre>
     </div>
 
+    <!-- Vehicle Information -->
+    @if (!string.IsNullOrEmpty(Model.Car.Plate) && Model.Car.Status != 404)
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Voertuig Informatie - @Model.Car.Plate
+                        </h6>
+                    </div>
+                    <div class="card-body py-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-center mb-2">
+                                    @if (!string.IsNullOrEmpty(Model.Car.Brand.Image))
+                                    {
+                                        <img src="@Model.Car.Brand.Image" class="brand-logo me-2" alt="@Model.Car.Brand.Name" style="max-width: 40px; max-height: 40px;" />
+                                    }
+                                    <div>
+                                        <small class="text-primary fw-semibold">Merk</small>
+                                        <div class="fw-semibold">@Model.Car.Brand.Name</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <small class="text-primary fw-semibold">Model</small>
+                                    <div>@Model.Car.Model.Name</div>
+                                </div>
 
-    <form asp-controller="Home" id="stripgroupform">
-        <div class="row">
+                                <div class="mb-2">
+                                    <small class="text-primary fw-semibold">Type</small>
+                                    <div>@Model.Car.Type.Name</div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                @if (!string.IsNullOrEmpty(Model.Car.Model.Image))
+                                {
+                                    <img src="@Model.Car.Model.Image" class="vehicle-image img-fluid rounded mb-2" alt="@Model.Car.Model.Name" style="max-height: 120px;" />
+                                }
+                                
+                                <div class="vehicle-details">
+                                    @if (Model.Car.Type.Id > 0)
+                                    {
+                                        <span class="badge bg-secondary me-1 mb-1">
+                                            <i class="fas fa-hashtag me-1"></i>
+                                            Type ID: @Model.Car.Type.Id
+                                        </span>
+                                    }
 
-            <select class="form-control"
-                    asp-for="StripGroupId"
-                    asp-items="@Model.StripGroupList">
-            </select>
+                                    @if (!string.IsNullOrWhiteSpace(Model.Car.Type.Fuel))
+                                    {
+                                        <span class="badge bg-info me-1 mb-1">
+                                            <i class="fas fa-gas-pump me-1"></i>
+                                            Brandstof: 
+                                            @(Model.Car.Type.Fuel == "0" ? "Hybride" : 
+                                              Model.Car.Type.Fuel == "1" ? "Benzine" : "Onbekend")
+                                        </span>
+                                    }
 
+                                    @if (!string.IsNullOrWhiteSpace(Model.Car.Type.MotorCode))
+                                    {
+                                        <span class="badge bg-warning text-dark me-1 mb-1">
+                                            <i class="fas fa-cog me-1"></i>
+                                            Motor: @Model.Car.Type.MotorCode
+                                        </span>
+                                    }
 
-            <input type="hidden" asp-for="Car.Brand.Id" />
-            <input type="hidden" asp-for="Car.Brand.Image" />
-            <input type="hidden" asp-for="Car.Brand.Name" />
-
-            <input type="hidden" asp-for="Car.Model.Id" />
-            <input type="hidden" asp-for="Car.Model.Image" />
-            <input type="hidden" asp-for="Car.Model.Name" />
-
-            <input type="hidden" asp-for="Car.Type.Id" />
-            <input type="hidden" asp-for="Car.Type.Image" />
-            <input type="hidden" asp-for="Car.Type.Name" />
-
-            <input type="hidden" asp-for="Car.Type.Fuel" />
-            <input type="hidden" asp-for="Car.Type.MotorCode" />
-            <input type="hidden" asp-for="Car.Type.From" />
-            <input type="hidden" asp-for="Car.Type.Until" />
-            <input type="hidden" asp-for="Car.Plate" />
-
-
-            <input type="submit"
-                   class="btn btn-success"
-                   formmethod="post"
-                   asp-route-data=@Model
-                   asp-action="GetStripMenu"
-                   value="Get" />
+                                    @if (!string.IsNullOrWhiteSpace(Model.Car.Type.From))
+                                    {
+                                        <span class="badge bg-primary me-1 mb-1">
+                                            <i class="fas fa-calendar me-1"></i>
+                                            Periode: @Model.Car.Type.From - @Model.Car.Type.Until
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </form>
+    }
 
+    @if (Model.Car.Status == 404)
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="alert alert-warning d-flex align-items-center py-2" role="alert">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <div>
+                        <strong>Voertuig niet gevonden!</strong> 
+                        Het opgegeven kenteken kon niet worden gevonden.
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 
-    <form asp-controller="Home" id="stripgroupform">
-        <div class="row">
-
-            <input type="hidden" asp-for="Car.Brand.Id" />
-            <input type="hidden" asp-for="Car.Brand.Image" />
-            <input type="hidden" asp-for="Car.Brand.Name" />
-
-            <input type="hidden" asp-for="Car.Model.Id" />
-            <input type="hidden" asp-for="Car.Model.Image" />
-            <input type="hidden" asp-for="Car.Model.Name" />
-
-            <input type="hidden" asp-for="Car.Type.Id" />
-            <input type="hidden" asp-for="Car.Type.Image" />
-            <input type="hidden" asp-for="Car.Type.Name" />
-
-            <input type="hidden" asp-for="Car.Type.Fuel" />
-            <input type="hidden" asp-for="Car.Type.MotorCode" />
-            <input type="hidden" asp-for="Car.Type.From" />
-            <input type="hidden" asp-for="Car.Type.Until" />
-            <input type="hidden" asp-for="Car.Plate" />
-
-            <input type="hidden" asp-for="StripGroupList" />
-            <input type="hidden" asp-for="StripGroupId" />
-
-            @if (@Model.BlockLinkTexts != null)
-            {
-                <table>
-                    <tbody>
-
-                        @foreach (var blt in @Model.BlockLinkTexts)
-                        {
-                            <tr>
-                                <td>
+    <!-- Strip Group Selection -->
+    @if (!string.IsNullOrEmpty(Model.Car.Plate) && Model.Car.Status != 404)
+    {
+        <div class="row mb-3">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-layer-group me-2"></i>
+                            Onderdeel Categorie Selecteren
+                        </h6>
+                    </div>
+                    <div class="card-body py-3">
+                        <form asp-controller="Home" id="stripgroupform">
+                            <div class="row g-2 align-items-end">
+                                <div class="col-md-8">
+                                    <label class="form-label fw-semibold small">
+                                        <i class="fas fa-list me-2"></i>
+                                        Selecteer Categorie
+                                    </label>
+                                    <select class="form-select category-select"
+                                            asp-for="StripGroupId"
+                                            asp-items="@Model.StripGroupList">
+                                        <option value="">-- Kies een categorie --</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
                                     <button type="submit"
-                                    class="btn btn-light"
-                                    formmethod="post"
-                                    asp-action="GetStrip"
-                                    id="mysubmit"
-                                    name="StripId"
-                                    value="@blt.BlockId">
-                                        @blt.Name [ @blt.BlockId ]
+                                            class="btn btn-info w-100"
+                                            formmethod="post"
+                                            asp-route-data="@Model"
+                                            asp-action="GetStripMenu">
+                                        <i class="fas fa-arrow-right me-2"></i>
+                                        Volgende
                                     </button>
-                                </td>
-                            </tr>
-                        }
+                                </div>
+                            </div>
 
-                    </tbody>
-                </table>
-            }
-
+                            <!-- Hidden fields to preserve car data -->
+                            <input type="hidden" asp-for="Car.Brand.Id" />
+                            <input type="hidden" asp-for="Car.Brand.Image" />
+                            <input type="hidden" asp-for="Car.Brand.Name" />
+                            <input type="hidden" asp-for="Car.Model.Id" />
+                            <input type="hidden" asp-for="Car.Model.Image" />
+                            <input type="hidden" asp-for="Car.Model.Name" />
+                            <input type="hidden" asp-for="Car.Type.Id" />
+                            <input type="hidden" asp-for="Car.Type.Image" />
+                            <input type="hidden" asp-for="Car.Type.Name" />
+                            <input type="hidden" asp-for="Car.Type.Fuel" />
+                            <input type="hidden" asp-for="Car.Type.MotorCode" />
+                            <input type="hidden" asp-for="Car.Type.From" />
+                            <input type="hidden" asp-for="Car.Type.Until" />
+                            <input type="hidden" asp-for="Car.Plate" />
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </form>
+    }
 
-    <div class="parameters">
+    <!-- Strip Selection -->
+    @if (Model.BlockLinkTexts != null && Model.BlockLinkTexts.Any())
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-puzzle-piece me-2"></i>
+                            Onderdeel Selecteren
+                        </h6>
+                    </div>
+                    <div class="card-body py-3">
+                        <form asp-controller="Home">
+                            <div class="row g-2">
+                                @foreach (var blt in Model.BlockLinkTexts)
+                                {
+                                    <div class="col-md-6 col-lg-4">
+                                        <button type="submit"
+                                                class="btn btn-outline-primary w-100 p-2 text-start"
+                                                formmethod="post"
+                                                asp-action="GetStrip"
+                                                name="StripId"
+                                                value="@blt.BlockId">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <div class="fw-semibold small">@blt.Name</div>
+                                                    <small class="text-muted">ID: @blt.BlockId</small>
+                                                </div>
+                                                <i class="fas fa-arrow-right"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                }
+                            </div>
 
-        <div class="form-inline">
-            <label>StripId:</label>
-            <input class="form-control" value="@Model.StripId" readonly>
+                            <!-- Hidden fields to preserve data -->
+                            <input type="hidden" asp-for="Car.Brand.Id" />
+                            <input type="hidden" asp-for="Car.Brand.Image" />
+                            <input type="hidden" asp-for="Car.Brand.Name" />
+                            <input type="hidden" asp-for="Car.Model.Id" />
+                            <input type="hidden" asp-for="Car.Model.Image" />
+                            <input type="hidden" asp-for="Car.Model.Name" />
+                            <input type="hidden" asp-for="Car.Type.Id" />
+                            <input type="hidden" asp-for="Car.Type.Image" />
+                            <input type="hidden" asp-for="Car.Type.Name" />
+                            <input type="hidden" asp-for="Car.Type.Fuel" />
+                            <input type="hidden" asp-for="Car.Type.MotorCode" />
+                            <input type="hidden" asp-for="Car.Type.From" />
+                            <input type="hidden" asp-for="Car.Type.Until" />
+                            <input type="hidden" asp-for="Car.Plate" />
+                            <input type="hidden" asp-for="StripGroupList" />
+                            <input type="hidden" asp-for="StripGroupId" />
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
+    }
 
-        <div class="form-inline">
-            <label>Plate:</label>
-            <input class="form-control" value="@Model.Car.Plate" readonly>
+    <!-- Selected Article Display -->
+    @if (!string.IsNullOrEmpty(Model.Car.Plate) && Model.Car.Status != 404)
+    {
+        <div class="row mb-3">
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top">
+                    <div class="card-header bg-secondary text-white">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-shopping-cart me-2"></i>
+                            Geselecteerd Artikel
+                        </h6>
+                    </div>
+                    <div class="card-body py-3">
+                        <div class="mb-2">
+                            <label class="form-label small fw-semibold">Artikel Nummer</label>
+                            <input id="selectedarticle" 
+                                   class="form-control form-control-sm" 
+                                   readonly 
+                                   placeholder="Selecteer een artikel">
+                        </div>
+                        <div id="selected-item-container">
+                            <label class="form-label small fw-semibold">Artikel Details</label>
+                            <pre id="selected-item" class="bg-light p-2 rounded small" style="max-height: 200px; overflow-y: auto;"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- StripViewer Container -->
+            <div class="col-lg-8">
+                @if (Model.StripId > 0)
+                {
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-dark text-white">
+                            <h6 class="card-title mb-0">
+                                <i class="fas fa-image me-2"></i>
+                                Onderdelen Schema
+                            </h6>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="strip-viewer-container">
+                                <strip-viewer stripid="@Model.StripId" 
+                                            platenumber="'@Model.Car.Plate'" 
+                                            onselected="showselected" 
+                                            height="@Model.Height">
+                                </strip-viewer>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
+    }
 
-    </div>
-
-     <div>
-        <form asp-controller="Home" id="feedbackform">
-
-            <input type="hidden" asp-for="Car.Type.Id" />
-            <input type="hidden" asp-for="Car.Plate" />
-            <input type="hidden" asp-for="StripId" />
-            <input type="submit"
-                   class="btn btn-success"
-                   formmethod="get"
-                   asp-controller="Home"
-                   asp-action="Feedback"
-                   asp-route-data=@Model
-                   value="Feedback" />
-        </form>
-    </div>
-
-
-    <div class="row">
-        <strip-viewer stripid="@Model.StripId" platenumber="'@Model.Car.Plate'" onselected="showselected" height=@Model.Height></strip-viewer>
-    </div>
-
+    <!-- Debug Information (only show when StripId is set) -->
+    @if (Model.StripId > 0)
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Debug Informatie
+                        </h6>
+                    </div>
+                    <div class="card-body py-3">
+                        <div class="row g-2">
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Strip ID</label>
+                                <input class="form-control form-control-sm" value="@Model.StripId" readonly>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Kenteken</label>
+                                <input class="form-control form-control-sm" value="@Model.Car.Plate" readonly>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <form asp-controller="Home" class="w-100">
+                                    <input type="hidden" asp-for="Car.Type.Id" />
+                                    <input type="hidden" asp-for="Car.Plate" />
+                                    <input type="hidden" asp-for="StripId" />
+                                    <button type="submit"
+                                            class="btn btn-outline-info btn-sm w-100"
+                                            formmethod="get"
+                                            asp-controller="Home"
+                                            asp-action="Feedback"
+                                            asp-route-data="@Model">
+                                        <i class="fas fa-comment me-2"></i>
+                                        Feedback Geven
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 @section scripts
 {
 <script>
-    // event listener
-    const demoEventElement = document.getElementsByTagName('strip-viewer')[0];
-    demoEventElement.addEventListener('onselected', (event) => {
-        console.info('[Event]', event.detail[0]);
-        document.getElementById('selectedarticle').value = event.detail[0];
-
-
-        //alert(event.detail[0]);
-        var items = @Html.Raw( Json.Serialize(@Model.SupplierArticles));
-
-        var item = items.filter(function(x){
-            return x.placeholder == event.detail[0];
-        });
-
-         $('#selected-item').replaceWith('<pre id="selected-item">'+ JSON.stringify( item, null, 2 ) + '</pre>');
-
-        console.log(item);
-
+    // Auto-format license plate input
+    document.addEventListener('DOMContentLoaded', function() {
+        const plateInput = document.querySelector('.license-plate-input');
+        if (plateInput) {
+            plateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^A-Z0-9]/g, '');
+                
+                // Dutch license plate format
+                if (value.length <= 6) {
+                    // XX-XX-XX format
+                    value = value.replace(/(.{2})(.{2})(.{2})/, '$1-$2-$3');
+                } else {
+                    // XX-XXX-X format
+                    value = value.replace(/(.{2})(.{3})(.{1})/, '$1-$2-$3');
+                }
+                
+                e.target.value = value;
+            });
+        }
     });
 
+    // StripViewer event listener
+    const demoEventElement = document.getElementsByTagName('strip-viewer')[0];
+    if (demoEventElement) {
+        demoEventElement.addEventListener('onselected', (event) => {
+            console.info('[Event]', event.detail[0]);
+            document.getElementById('selectedarticle').value = event.detail[0];
+
+            var items = @Html.Raw(Json.Serialize(Model.SupplierArticles ?? new List<SupplierArticle>()));
+            var item = items.filter(function(x){
+                return x.placeholder == event.detail[0];
+            });
+
+            $('#selected-item').text(JSON.stringify(item, null, 2));
+            console.log(item);
+        });
+    }
+
+    // Form validation
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    });
 </script>
 }

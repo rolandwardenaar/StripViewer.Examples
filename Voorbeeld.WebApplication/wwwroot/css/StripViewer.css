@@ -1,107 +1,383 @@
-﻿.kenteken-page {
+﻿/* Modern StripViewer Styles */
 
+/* License plate input styling */
+.license-plate-input {
+    font-family: 'Courier New', monospace;
+    font-size: 1.2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-align: center;
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    transition: all 0.3s ease;
 }
 
-.plate-image {
-    position:relative;
-    left:-240px;
-    z-index:-2;
+.license-plate-input:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    transform: scale(1.02);
 }
 
+/* Brand logo styling */
+.brand-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+    padding: 5px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Vehicle image styling */
+.vehicle-image {
+    max-height: 200px;
+    object-fit: contain;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.vehicle-image:hover {
+    transform: scale(1.05);
+}
+
+/* Vehicle details badges */
+.vehicle-details .badge {
+    display: inline-block;
+    margin: 2px;
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+/* Strip viewer container */
+.strip-viewer-container {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px 0;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
 strip-viewer {
+    width: 100%;
+    height: auto;
     min-height: 400px;
-    transform:scale(80%);
-    position:relative;
-    left:-80px;    
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: white;
+    transition: transform 0.2s ease;
 }
 
-#Car_Plate {
-    padding-left: 40px;
-    margin-right: 20px;
-    width: 200px;
-    height: 50px;
-    font-size: 32px;
-    background-image: url(../img/kentekenplaat.png);
-    background-repeat: no-repeat;
-    background-size: 198px 48px;    
+strip-viewer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-
-
-#carform {
-    margin-bottom: 4px;
-    width: stretch;
-    
+/* Card enhancements */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
 }
-    #carform input[type=submit] {
-        min-width: 80px;
-        max-height: 50px;
-        margin-top: 10px;
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    border: none;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
+    pointer-events: none;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Button improvements */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-outline-primary {
+    border: 2px solid #007bff;
+    background: rgba(0, 123, 255, 0.05);
+}
+
+.btn-outline-primary:hover {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+/* Form controls */
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.95);
+    color: #212529;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background: white;
+    color: #212529;
+}
+
+/* Readonly form controls */
+.form-control[readonly] {
+    background: #f8f9fa;
+    color: #495057;
+    border-color: #ced4da;
+}
+
+.form-control.bg-light {
+    background: #f8f9fa !important;
+    color: #495057 !important;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+/* Input group styling */
+.input-group-text {
+    border: 2px solid #e9ecef;
+    border-radius: 8px 0 0 8px;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    font-weight: 600;
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Alert styling */
+.alert {
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+    border-left: 4px solid #ffc107;
+}
+
+/* Sticky sidebar */
+.sticky-top {
+    position: sticky;
+    top: 2rem;
+    z-index: 1020;
+}
+
+/* Pre/code styling */
+pre {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 1rem;
+    font-size: 0.8rem;
+    max-height: 300px;
+    overflow-y: auto;
+    color: #495057;
+    font-family: 'Monaco', 'Consolas', 'Courier New', monospace;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #007bff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-.kenteken-result {
-    
-    width: stretch;
-    min-height: 160px;
-    min-width: 480px;
-    border: solid 1px silver;
-    display: inline-block;
-    border-radius: 5px;
-    padding: 4px;
-    position:relative;
-    left:-14px
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
 }
-    .kenteken-result .img1 img {
-    float: left;
-    display: block;
-    margin-right: 10px;
-    max-width: 40px;
-    max-height: 40px;
-}
-.kenteken-result .img2 img {
-    max-width: 240px;
-    max-height: 160px;
-    margin-top: 30px;
-    display: block;
-}
-    .kenteken-result > div:first-of-type {
-        display: block;
-        
-    }
 
-    .kenteken-result > div > div {
-        margin-top: 10px;
-        margin-right: 10px;
-        float: left;
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1rem;
     }
+    
+    .btn-lg {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+    
+    .sticky-top {
+        position: static;
+        margin-bottom: 1rem;
+    }
+    
+    strip-viewer {
+        min-height: 300px;
+    }
+    
+    .license-plate-input {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+    
+    .brand-logo {
+        width: 40px;
+        height: 40px;
+    }
+}
 
-    .kenteken-result .img2 div {
-        float: left;
+@media (max-width: 576px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
-#stripgroupform {
-    margin-bottom: 4px;
     
-    max-width:480px;
-}
-    #stripgroupform select {
-        width: 250px;
-        margin-right: 20px;
-        
+    .card-header {
+        padding: 0.75rem 1rem;
     }
-.parameters {
-    width: 480px;
-    margin-bottom: 4px;
     
+    .btn {
+        padding: 0.5rem 1rem;
+    }
 }
-.parameters label{
-    width:100px;
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background: rgba(33, 37, 41, 0.95);
+        color: #f8f9fa;
+    }
     
+    .form-control, .form-select {
+        background: rgba(73, 80, 87, 0.9) !important;
+        border-color: #495057;
+        color: #f8f9fa !important;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        background: #495057 !important;
+        color: #f8f9fa !important;
+    }
+    
+    .form-control[readonly] {
+        background: #343a40 !important;
+        color: #adb5bd !important;
+        border-color: #495057;
+    }
+    
+    .form-control.bg-light {
+        background: #343a40 !important;
+        color: #adb5bd !important;
+    }
+    
+    pre {
+        background: linear-gradient(135deg, #343a40, #495057);
+        color: #f8f9fa;
+    }
 }
-.shopping-basket{
-    width:450px;
-    height:380px;
-    float:right;
-    overflow:auto;
+
+/* Print styles */
+@media print {
+    .btn, .card-header, .sticky-top {
+        display: none !important;
+    }
     
+    .card {
+        box-shadow: none;
+        border: 1px solid #dee2e6;
+        break-inside: avoid;
+    }
+    
+    strip-viewer {
+        max-height: 400px;
+        overflow: hidden;
+    }
 }

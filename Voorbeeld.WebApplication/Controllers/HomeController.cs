@@ -23,7 +23,7 @@ namespace Voorbeeld.WebApplication.Controllers
 
         public IActionResult Index()
         {
-            _stripViewModel.Car.Plate = "23nkz7";
+            _stripViewModel.Car.Plate = "23NKZ7";
             return View(_stripViewModel);
         }
 
@@ -63,7 +63,14 @@ namespace Voorbeeld.WebApplication.Controllers
                                               .Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Name })
                                               .ToList();
             vm.StripGroupList = stripGroups;
-            vm.Car = result;
+            if (result == null)
+            {
+                vm.Car = new CarViewModel ();
+            }
+            else
+            {
+                vm.Car = result;
+            }
 
             return View("Index", vm);
         }

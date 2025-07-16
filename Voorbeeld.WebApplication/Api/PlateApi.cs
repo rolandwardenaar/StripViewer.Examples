@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Text.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Voorbeeld.WebApplication.Models;
@@ -22,7 +22,7 @@ namespace Voorbeeld.WebApplication.Api
                 {
                     Plate = plate,
                     Brand = new Brand { Name = "Dummy Car" },
-                    Model = new Model { Name = "Plate service needs a Token to function!!"},
+                    Model = new Model { Name = "The Plate Service needs a Token to function, a fixed CarTypeId=18586 will be used!!" },
                     Type = new Type { Id = 18586 }
                 };
             }
@@ -33,8 +33,8 @@ namespace Voorbeeld.WebApplication.Api
             {
                 var json = await result.Content.ReadAsStringAsync();
 
-                var root = JObject.Parse(json);
-                return root["data"].ToObject<CarViewModel>();
+                var root = JsonDocument.Parse(json);
+                return JsonSerializer.Deserialize<CarViewModel>(root.RootElement.GetProperty("data").GetRawText());
             }
             return null;
         }

@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
+using System.Threading.Tasks;
+using Voorbeeld.WebApplication.Services;
 
 namespace Voorbeeld.WebApplication.Api
 {
@@ -11,45 +13,30 @@ namespace Voorbeeld.WebApplication.Api
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfiguration _configuration;
+        private readonly ITokenService _tokenService;
 
-        public StripClientBuilder(IHttpClientFactory clientFactory, IConfiguration configuration)
+        public StripClientBuilder(IHttpClientFactory clientFactory, IConfiguration configuration, ITokenService tokenService)
         {
             _clientFactory = clientFactory;
             _configuration = configuration;
+            _tokenService = tokenService;
         }
+
         public HttpClient Build()
         {
-            var jwtToken = _configuration["Databuilding:Token"];            
-            string baseUrl = _configuration["Databuilding:BaseUrlApi"];
+            return BuildAsync().GetAwaiter().GetResult();
+        }
 
-            var days = CheckToken(jwtToken);
-            if(days < 1)
-            {
-                // use StripApi.GetNewToken() before token gets expired !!!
-            }
+        public async Task<HttpClient> BuildAsync()
+        {
+            string baseUrl = _configuration["Yaro:BaseUrlApi"];
+            var jwtToken = await _tokenService.GetValidTokenAsync();
 
             var client = _clientFactory.CreateClient();
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + jwtToken);
-
             client.BaseAddress = new Uri(baseUrl);
             return client;
         }
-
-        private static double CheckToken(string token)
-        {
-            double days; 
-            var handler = new JwtSecurityTokenHandler();
-            var jsonToken = handler.ReadToken(token);
-            if (jsonToken is not JwtSecurityToken jwtToken || jwtToken.ValidTo < DateTime.Now)
-            {
-                throw new Exception("Stripviewer token has expired. Get a new token from Yarodataservice.com");
-            }
-            else
-            {
-                Debug.WriteLine($"Token for Stripviewer is valid till: {jwtToken.ValidTo:F}");
-                days = (jwtToken.ValidTo - DateTime.Now).TotalDays;
-            }
-            return days;
-        }
+     
     }
 }

@@ -1,37 +1,258 @@
-﻿@model Voorbeeld.WebApplication.Models.Feedback
+@model Voorbeeld.WebApplication.Models.Feedback
 
-<form  asp-controller="Home" asp-action="Feedback" method="post">
-    <h4>Sender</h4>
-    <div class="form-inline">
-        <label class="col-2">Name</label>
-        <input class="form-control" asp-for="Name" />
+<div class="container">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center py-4">
+                    <h1 class="card-title mb-3">
+                        <i class="fas fa-comment-dots me-2"></i>
+                        Feedback Formulier
+                    </h1>
+                    <p class="card-text lead">
+                        Help ons onze service te verbeteren door uw feedback te delen
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-inline">
-        <label class="col-2">ReplyEmailAddress</label>
-        <input class="form-control" asp-for="ReplyEmailAddress" />
-    </div>
-    <h4>About</h4>
-    <div class="form-inline">
-        <label class="col-2">Plate</label>
-        <input class="form-control" asp-for="PlateNumber" readonly />
-    </div>
-    <div class="form-inline">
-        <label class="col-2">Car Index</label>
-        <input class="form-control" asp-for="KtypeId" readonly />
-    </div>
-    <div class="form-inline">
-        <label class="col-2">Strip Index</label>
-        <input class="form-control" asp-for="BlockId" readonly />
-    </div>
-    <h4>Findings</h4>
-    <div class="form-inline">
-        <label class="col-2">Message</label>
-        <textarea class="form-control" asp-for="Message" rows="5" cols="100">
+    <!-- Feedback Form -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-paper-plane me-2"></i>
+                        Stuur uw feedback
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Home" asp-action="Feedback" method="post" class="needs-validation" novalidate>
+                        
+                        <!-- Sender Information -->
+                        <div class="mb-4">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-user me-2"></i>
+                                Uw Gegevens
+                            </h6>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Name" class="form-label fw-semibold">
+                                        <i class="fas fa-id-card me-2"></i>
+                                        Naam *
+                                    </label>
+                                    <input asp-for="Name" 
+                                           class="form-control" 
+                                           placeholder="Uw volledige naam"
+                                           required />
+                                    <div class="invalid-feedback">
+                                        Vul uw naam in
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label asp-for="ReplyEmailAddress" class="form-label fw-semibold">
+                                        <i class="fas fa-envelope me-2"></i>
+                                        E-mailadres *
+                                    </label>
+                                    <input asp-for="ReplyEmailAddress" 
+                                           type="email"
+                                           class="form-control" 
+                                           placeholder="uw.email@example.com"
+                                           required />
+                                    <div class="invalid-feedback">
+                                        Vul een geldig e-mailadres in
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-        </textarea>
+                        <!-- Vehicle Information -->
+                        <div class="mb-4">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-car me-2"></i>
+                                Voertuig Informatie
+                            </h6>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label asp-for="PlateNumber" class="form-label fw-semibold">
+                                        <i class="fas fa-id-card me-2"></i>
+                                        Kenteken
+                                    </label>
+                                    <input asp-for="PlateNumber" 
+                                           class="form-control bg-light" 
+                                           readonly />
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label asp-for="KtypeId" class="form-label fw-semibold">
+                                        <i class="fas fa-hashtag me-2"></i>
+                                        Voertuig Type ID
+                                    </label>
+                                    <input asp-for="KtypeId" 
+                                           class="form-control bg-light" 
+                                           readonly />
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <label asp-for="BlockId" class="form-label fw-semibold">
+                                        <i class="fas fa-puzzle-piece me-2"></i>
+                                        Onderdeel ID
+                                    </label>
+                                    <input asp-for="BlockId" 
+                                           class="form-control bg-light" 
+                                           readonly />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feedback Message -->
+                        <div class="mb-4">
+                            <h6 class="text-primary mb-3">
+                                <i class="fas fa-comment-alt me-2"></i>
+                                Uw Feedback
+                            </h6>
+                            
+                            <div class="mb-3">
+                                <label asp-for="Message" class="form-label fw-semibold">
+                                    <i class="fas fa-edit me-2"></i>
+                                    Bericht *
+                                </label>
+                                <textarea asp-for="Message" 
+                                          class="form-control" 
+                                          rows="6" 
+                                          placeholder="Beschrijf uw bevindingen, suggesties of problemen die u heeft ondervonden..."
+                                          required></textarea>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    Wees zo specifiek mogelijk om ons te helpen uw feedback te begrijpen
+                                </div>
+                                <div class="invalid-feedback">
+                                    Vul uw bericht in
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Terug
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>
+                                Feedback Versturen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <input type="submit" class="btn btn-success" value="Submit" />
-    <label asp-for="Response" >@Model.Response</label>
-</form>
+
+    <!-- Response Message -->
+    @if (!string.IsNullOrEmpty(Model.Response))
+    {
+        <div class="row justify-content-center mt-4">
+            <div class="col-lg-8">
+                <div class="alert alert-success d-flex align-items-center" role="alert">
+                    <i class="fas fa-check-circle me-3" style="font-size: 1.5rem;"></i>
+                    <div>
+                        <h6 class="alert-heading mb-1">Bedankt voor uw feedback!</h6>
+                        <p class="mb-0">@Model.Response</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Help Section -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-8">
+            <div class="card border-info">
+                <div class="card-header bg-info bg-opacity-10 border-info">
+                    <h6 class="card-title text-info mb-0">
+                        <i class="fas fa-question-circle me-2"></i>
+                        Tips voor goede feedback
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Beschrijf specifiek welk onderdeel of functie problemen geeft
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Vermeld welke stappen u heeft genomen
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Geef aan wat u verwachtte en wat er werkelijk gebeurde
+                        </li>
+                        <li class="mb-0">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Suggesties voor verbetering zijn altijd welkom
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+<script>
+    // Bootstrap form validation
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+    // Auto-resize textarea
+    const textarea = document.querySelector('textarea[asp-for="Message"]');
+    if (textarea) {
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    }
+
+    // Character counter for message
+    const messageField = document.querySelector('textarea[name="Message"]');
+    if (messageField) {
+        const maxLength = 1000;
+        const counter = document.createElement('div');
+        counter.className = 'form-text text-end';
+        counter.innerHTML = `<small>0 / ${maxLength} karakters</small>`;
+        messageField.parentNode.appendChild(counter);
+
+        messageField.addEventListener('input', function() {
+            const length = this.value.length;
+            counter.innerHTML = `<small>${length} / ${maxLength} karakters</small>`;
+            
+            if (length > maxLength * 0.9) {
+                counter.className = 'form-text text-end text-warning';
+            } else {
+                counter.className = 'form-text text-end text-muted';
+            }
+        });
+    }
+</script>
+}
